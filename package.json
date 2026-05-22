@@ -1,0 +1,24 @@
+{
+  "name": "apps-in-toss-pipeline",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Claude Code 플러그인: 앱인토스(Apps in Toss) 미니앱 개발을 아이디어부터 에셋 생성, 구현까지 자동화",
+  "license": "MIT",
+  "author": "HiImYong99",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HiImYong99/apps-in-toss-pipeline.git"
+  },
+  "homepage": "https://github.com/HiImYong99/apps-in-toss-pipeline",
+  "scripts": {
+    "resize-image": "tsx scripts/resize-image.ts"
+  },
+  "dependencies": {
+    "sharp": "^0.33.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

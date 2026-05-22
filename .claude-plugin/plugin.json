@@ -1,0 +1,18 @@
+{
+  "name": "apps-in-toss-pipeline",
+  "description": "앱인토스(Apps in Toss) 미니앱 개발을 아이디어 브레인스토밍부터 에셋 생성, 앱 구현까지 단계별로 자동화하는 Claude Code 플러그인",
+  "version": "1.0.0",
+  "author": {
+    "name": "HiImYong99"
+  },
+  "homepage": "https://github.com/HiImYong99/apps-in-toss-pipeline",
+  "repository": "https://github.com/HiImYong99/apps-in-toss-pipeline",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "plugin",
+    "apps-in-toss",
+    "toss",
+    "miniapp"
+  ]
+}
