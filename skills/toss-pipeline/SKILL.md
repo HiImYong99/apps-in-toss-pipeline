@@ -128,13 +128,23 @@ mkdir -p ~/Desktop/{app-name}/app/assets
 
 이후 모든 파일은 이 디렉토리에 저장됩니다.
 
-**사전 확인**: 리사이즈 스크립트 실행 전 의존성을 확인합니다:
+**사전 확인 (의존성 bootstrap)**: 이미지 리사이즈에 필요한 `sharp`/`tsx` 를 `${CLAUDE_PLUGIN_DATA}` 에 설치하고, 실행 시 ESM 모듈 해석이 깨지지 않도록 `scripts/` 도 같은 디렉토리에 동기화합니다. `${CLAUDE_PLUGIN_ROOT}` 는 플러그인 업데이트 시 변경되는 ephemeral 경로이므로 의존성과 그 의존성을 사용하는 스크립트는 반드시 `${CLAUDE_PLUGIN_DATA}` 에 보관해야 합니다.
+
+다음을 한 번 실행합니다 (이미 설치되어 있고 `package.json` 이 변경되지 않았으면 npm install 은 자동으로 skip; `scripts/` 는 매번 동기화):
 
 ```bash
-cd "${CLAUDE_PLUGIN_ROOT}" && ls node_modules/.bin/tsx 2>/dev/null || echo "tsx 미설치 - npm install 실행 필요"
+PLUGIN_DATA="${CLAUDE_PLUGIN_DATA:-${CLAUDE_PLUGIN_ROOT}}"
+mkdir -p "${PLUGIN_DATA}"
+if ! diff -q "${CLAUDE_PLUGIN_ROOT}/package.json" "${PLUGIN_DATA}/package.json" >/dev/null 2>&1; then
+  cp "${CLAUDE_PLUGIN_ROOT}/package.json" "${PLUGIN_DATA}/package.json"
+  [ -f "${CLAUDE_PLUGIN_ROOT}/package-lock.json" ] && cp "${CLAUDE_PLUGIN_ROOT}/package-lock.json" "${PLUGIN_DATA}/package-lock.json"
+  (cd "${PLUGIN_DATA}" && npm install)
+fi
+rm -rf "${PLUGIN_DATA}/scripts"
+cp -R "${CLAUDE_PLUGIN_ROOT}/scripts" "${PLUGIN_DATA}/scripts"
 ```
 
-미설치 시: `cd "${CLAUDE_PLUGIN_ROOT}" && npm install`
+`${CLAUDE_PLUGIN_DATA}` 가 unset 또는 빈 값이면 (예: `claude --plugin-dir` 로컬 개발) `${CLAUDE_PLUGIN_ROOT}` 로 fallback 합니다. `npm install` 은 외부 npm registry 접근이 필요하므로 Phase 2 진입 시 네트워크가 가용해야 합니다.
 
 ### Step 2-2: 부제 생성
 
@@ -194,7 +204,7 @@ fills 80% of the canvas, large centered symbol, minimal padding,
 생성된 이미지를 600x600으로 리사이즈합니다:
 
 ```bash
-cd "${CLAUDE_PLUGIN_ROOT}" && npx tsx scripts/resize-image.ts --input /tmp/toss-logo-raw.png --output ~/Desktop/{app-name}/logo-600x600.png --width 600 --height 600
+cd "${CLAUDE_PLUGIN_DATA:-${CLAUDE_PLUGIN_ROOT}}" && npx tsx scripts/resize-image.ts --input /tmp/toss-logo-raw.png --output "$HOME/Desktop/{app-name}/logo-600x600.png" --width 600 --height 600
 ```
 
 생성된 로고 이미지를 사용자에게 보여주고 AskUserQuestion:
@@ -234,7 +244,7 @@ Toss mini-app style, bright and friendly tone, {주요 색상 1} and {주요 색
 생성된 이미지를 1932x828로 리사이즈합니다:
 
 ```bash
-cd "${CLAUDE_PLUGIN_ROOT}" && npx tsx scripts/resize-image.ts --input /tmp/toss-thumbnail-raw.png --output ~/Desktop/{app-name}/thumbnail-1932x828.png --width 1932 --height 828
+cd "${CLAUDE_PLUGIN_DATA:-${CLAUDE_PLUGIN_ROOT}}" && npx tsx scripts/resize-image.ts --input /tmp/toss-thumbnail-raw.png --output "$HOME/Desktop/{app-name}/thumbnail-1932x828.png" --width 1932 --height 828
 ```
 
 생성된 썸네일을 사용자에게 보여주고 AskUserQuestion:

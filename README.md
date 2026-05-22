@@ -11,25 +11,26 @@
 
 ## 설치
 
-### 1) Claude Code 플러그인으로 설치
+### A) 로컬 클론 + 개발용 로드 (`--plugin-dir`)
 
 ```bash
-# 1) 로컬 클론
 git clone https://github.com/HiImYong99/apps-in-toss-pipeline.git
 cd apps-in-toss-pipeline
+npm install            # sharp, tsx 등 로컬 의존성
 
-# 2) 의존성 설치 (이미지 리사이즈용 sharp 등)
-npm install
-
-# 3) 이 디렉토리를 플러그인으로 로드
+# 이 디렉토리를 플러그인으로 로드
 claude --plugin-dir .
 ```
 
-또는 마켓플레이스에 등록된 경우:
+### B) 마켓플레이스 / 플러그인 매니저로 설치
 
 ```bash
 /plugin install apps-in-toss-pipeline
 ```
+
+설치 시 의존성은 따로 받지 않습니다. 스킬이 Phase 2 진입 시 자동으로 `${CLAUDE_PLUGIN_DATA}` 에 `sharp`/`tsx` 를 부트스트랩합니다 (`package.json` 변경 시에만 재설치).
+
+> **네트워크 요구사항**: 자동 부트스트랩은 `npm install` 을 호출하므로 **Phase 2 실행 시점에** `npm` 이 PATH 에 있고 npm registry 외부 접속이 가능해야 합니다. 폐쇄망/오프라인 환경이라면 위 A) 흐름으로 사전에 `npm install` 을 마쳐주세요.
 
 ## 사용법
 

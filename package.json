@@ -14,11 +14,11 @@
     "resize-image": "tsx scripts/resize-image.ts"
   },
   "dependencies": {
-    "sharp": "^0.33.0"
+    "sharp": "^0.33.0",
+    "tsx": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
-    "tsx": "^4.0.0",
     "typescript": "^5.0.0"
   }
 }
