@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1932 828" width="1932" height="828">
+  <rect width="1932" height="828" fill="{{BG}}"/>
+  {{ACCENT_BLOCK}}
+  {{TEXT_BLOCK}}
+</svg>
