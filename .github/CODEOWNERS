@@ -1,0 +1,10 @@
+# 모든 변경은 저장소 소유자가 자동 reviewer 로 지정됩니다.
+* @HiImYong99
+
+# 보안 민감 경로는 명시적으로 한 번 더 표기 (override 방지)
+/.github/                @HiImYong99
+/.github/workflows/      @HiImYong99
+/scripts/                @HiImYong99
+/skills/                 @HiImYong99
+package.json             @HiImYong99
+package-lock.json        @HiImYong99
