@@ -12,7 +12,27 @@
 
 ## 설치
 
-### A) 로컬 클론 + 개발용 로드 (`--plugin-dir`)
+### A) 마켓플레이스로 설치 (권장)
+
+Claude Code 안에서 두 명령을 순서대로 실행합니다. 첫 명령은 이 저장소를 마켓플레이스로 등록하고, 두 번째 명령이 그 마켓플레이스에서 플러그인을 설치합니다 (`@` 뒤가 마켓플레이스 이름).
+
+```
+/plugin marketplace add HiImYong99/apps-in-toss-pipeline
+/plugin install apps-in-toss-pipeline@apps-in-toss-pipeline
+```
+
+`Marketplace ... not found` 오류가 나오면 첫 명령(`marketplace add`)을 빠뜨린 경우입니다 — 순서대로 다시 실행.
+
+이후 업데이트는:
+
+```
+/plugin marketplace update apps-in-toss-pipeline
+/plugin update
+```
+
+### B) 로컬 클론 + 개발용 로드 (`--plugin-dir`)
+
+플러그인을 직접 수정·테스트하려는 경우:
 
 ```bash
 git clone https://github.com/HiImYong99/apps-in-toss-pipeline.git
@@ -23,20 +43,11 @@ npm install            # sharp, tsx 등 로컬 의존성
 claude --plugin-dir .
 ```
 
-### B) 마켓플레이스로 설치 (권장)
+### 의존성·네트워크
 
-Claude Code 안에서 다음 두 명령을 실행합니다.
+설치 시 npm 의존성은 받지 않습니다. 스킬이 Phase 2 진입 시점에 자동으로 `${CLAUDE_PLUGIN_DATA}` 로 `sharp`/`tsx` 를 부트스트랩하고 `scripts/` (템플릿 포함) 를 동기화합니다 (`package.json` 변경 시에만 재설치).
 
-```
-/plugin marketplace add HiImYong99/apps-in-toss-pipeline
-/plugin install apps-in-toss-pipeline@apps-in-toss-pipeline
-```
-
-이후 업데이트는 `/plugin marketplace update apps-in-toss-pipeline` → `/plugin update` 로 받습니다.
-
-설치 시 의존성은 따로 받지 않습니다. 스킬이 Phase 2 진입 시 자동으로 `${CLAUDE_PLUGIN_DATA}` 에 `sharp`/`tsx` 를 부트스트랩하고 `scripts/` (템플릿 포함) 를 동기화합니다 (`package.json` 변경 시에만 재설치).
-
-> **네트워크 요구사항**: 자동 부트스트랩은 `npm install` 을 호출하므로 **Phase 2 실행 시점에** `npm` 이 PATH 에 있고 npm registry 외부 접속이 가능해야 합니다. 폐쇄망/오프라인 환경이라면 위 A) 흐름으로 사전에 `npm install` 을 마쳐주세요.
+> **네트워크 요구사항**: 자동 부트스트랩은 `npm install` 을 호출하므로 **Phase 2 실행 시점에** `npm` 이 PATH 에 있고 npm registry 외부 접속이 가능해야 합니다. 폐쇄망/오프라인 환경이라면 위 B) 흐름으로 사전에 `npm install` 을 마쳐주세요.
 
 ## 사용법
 
@@ -60,6 +71,21 @@ Claude Code 안에서 다음 스킬을 호출합니다.
 └── {app-folder}/            create-ait-app 으로 만든 프로젝트
     └── granite.config.ts    콘솔 등록 후 brand.icon URL 입력 필요
 ```
+
+### 스킬 없이 에셋만 직접 렌더
+
+SVG 템플릿은 단독 호출도 가능합니다 (typographic-bold 패턴 — 단색 BG + 큰 한글 + 액센트 한 글자):
+
+```bash
+npx tsx scripts/render-svg-asset.ts \
+  --template logo \
+  --bg "#FFCD3C" --accent "#EA3C53" \
+  --title-line1 "데일리" --title-line2 "단어" --accent-char "5" \
+  --tagline "DAILY WORD" \
+  --output ./logo-600x600.png
+```
+
+옵션 전체는 `--help` 없이 인자 누락하면 출력됩니다. 카테고리별 `--bg`/`--accent` 추천 페어는 `skills/toss-pipeline/references/design-system.md` §1.b.
 
 ## 사전 요구사항
 
