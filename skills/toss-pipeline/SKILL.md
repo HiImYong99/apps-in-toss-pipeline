@@ -316,7 +316,13 @@ mkdir -p "${PLUGIN_DATA}"
 if ! diff -q "${CLAUDE_PLUGIN_ROOT}/package.json" "${PLUGIN_DATA}/package.json" >/dev/null 2>&1; then
   cp "${CLAUDE_PLUGIN_ROOT}/package.json" "${PLUGIN_DATA}/package.json"
   [ -f "${CLAUDE_PLUGIN_ROOT}/package-lock.json" ] && cp "${CLAUDE_PLUGIN_ROOT}/package-lock.json" "${PLUGIN_DATA}/package-lock.json"
-  (cd "${PLUGIN_DATA}" && npm install)
+  # lockfile 이 있으면 `npm ci` 로 정확한 버전 재현 (supply-chain 방어), 없을 때만 fallback.
+  # `npm ci` 실패 시 묵묵히 `npm install` 로 떨어지지 않도록 if/else 분기 (lockfile 파손 = 하드 실패).
+  if [ -f "${PLUGIN_DATA}/package-lock.json" ]; then
+    (cd "${PLUGIN_DATA}" && npm ci --no-audit --no-fund)
+  else
+    (cd "${PLUGIN_DATA}" && npm install --no-audit --no-fund)
+  fi
 fi
 rm -rf "${PLUGIN_DATA}/scripts"
 cp -R "${CLAUDE_PLUGIN_ROOT}/scripts" "${PLUGIN_DATA}/scripts"

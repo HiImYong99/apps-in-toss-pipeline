@@ -7,7 +7,11 @@
   "plugins": [
     {
       "name": "apps-in-toss-pipeline",
-      "source": "./",
+      "source": {
+        "source": "github",
+        "repo": "HiImYong99/apps-in-toss-pipeline",
+        "ref": "v1.1.0"
+      },
       "description": "앱인토스 미니앱 개발 파이프라인 — 아이디어부터 에셋 생성·앱 구현까지 원스톱 자동화",
       "homepage": "https://github.com/HiImYong99/apps-in-toss-pipeline",
       "repository": "https://github.com/HiImYong99/apps-in-toss-pipeline",
