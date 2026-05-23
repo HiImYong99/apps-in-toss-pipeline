@@ -23,11 +23,16 @@ npm install            # sharp, tsx 등 로컬 의존성
 claude --plugin-dir .
 ```
 
-### B) 마켓플레이스 / 플러그인 매니저로 설치
+### B) 마켓플레이스로 설치 (권장)
 
-```bash
-/plugin install apps-in-toss-pipeline
+Claude Code 안에서 다음 두 명령을 실행합니다.
+
 ```
+/plugin marketplace add HiImYong99/apps-in-toss-pipeline
+/plugin install apps-in-toss-pipeline@apps-in-toss-pipeline
+```
+
+이후 업데이트는 `/plugin marketplace update apps-in-toss-pipeline` → `/plugin update` 로 받습니다.
 
 설치 시 의존성은 따로 받지 않습니다. 스킬이 Phase 2 진입 시 자동으로 `${CLAUDE_PLUGIN_DATA}` 에 `sharp`/`tsx` 를 부트스트랩하고 `scripts/` (템플릿 포함) 를 동기화합니다 (`package.json` 변경 시에만 재설치).
 
@@ -79,7 +84,8 @@ Claude Code 안에서 다음 스킬을 호출합니다.
 ```
 apps-in-toss-pipeline/
 ├── .claude-plugin/
-│   └── plugin.json                 플러그인 매니페스트
+│   ├── plugin.json                 플러그인 매니페스트
+│   └── marketplace.json            마켓플레이스 카탈로그
 ├── skills/
 │   └── toss-pipeline/
 │       ├── SKILL.md                파이프라인 정의 (Phase 0~4)

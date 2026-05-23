@@ -1,0 +1,26 @@
+{
+  "name": "apps-in-toss-pipeline",
+  "description": "앱인토스(Apps in Toss) 미니앱 개발 파이프라인 플러그인 카탈로그",
+  "owner": {
+    "name": "HiImYong99"
+  },
+  "plugins": [
+    {
+      "name": "apps-in-toss-pipeline",
+      "source": "./",
+      "description": "앱인토스 미니앱 개발 파이프라인 — 아이디어부터 에셋 생성·앱 구현까지 원스톱 자동화",
+      "homepage": "https://github.com/HiImYong99/apps-in-toss-pipeline",
+      "repository": "https://github.com/HiImYong99/apps-in-toss-pipeline",
+      "license": "MIT",
+      "category": "workflow",
+      "keywords": [
+        "claude-code",
+        "plugin",
+        "apps-in-toss",
+        "toss",
+        "miniapp",
+        "korean"
+      ]
+    }
+  ]
+}
