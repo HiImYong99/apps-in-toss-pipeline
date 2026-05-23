@@ -13,6 +13,7 @@ export async function resizeImage({
 }): Promise<void> {
   await sharp(inputPath)
     .resize(width, height, { fit: 'cover' })
+    .flatten({ background: '#FFFFFF' })
     .png()
     .toFile(outputPath);
 
